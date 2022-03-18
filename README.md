@@ -1,6 +1,8 @@
-# Challenge reactor-core
+# Actividad SofkaU
 
-_Maycol Steven_
+**_Maycol Steven Rincon Bayona_**
+
+# Challenge reactor-core
 
 Dentro del código se encutra un ejemplo para aplicar reactividad con Spring Boot, se cuenta con una herramienta utilitaria para leer archivos CSV, lo que se buscar es aplicar los operadores reactivas para leer este archivo, y se reta para hacer este procedimiento en mongodb.
 
