@@ -64,10 +64,4 @@ public class CSVUtilTest {
     }
 
 
-    //TALLER DE REACTIVIDAD SOFKAU
-    @Test
-    void stream_filtrarJugadoresMayoresA34(){
-
-    }
-
 }

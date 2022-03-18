@@ -1,7 +1,10 @@
 package com.example.demo;
 
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -37,9 +40,30 @@ public class MaycolCSVTest {
         assert listFilter.size() == 451;
     }
 
+    //FILTRO DE JUGADORES MAYORES DE 34 AÑOS POR REACTIVE
     @Test
     void reactive_playersFilterAgeOver34() {
         List<Player> list = CsvUtilFile.getPlayers();
-        
+        Flux<Player> listFlux = Flux.fromStream(list.parallelStream()).cache();
+        Mono<Map<String, Collection<Player>>> listFilter = listFlux.filter(player -> player.age >= 34) //mayores a 34 años
+                .map(player -> {
+                    player.name = player.name.toUpperCase(Locale.ROOT);
+                    return player;
+                })
+                .buffer(100) //collect of 100 elements
+                .flatMap(playerA -> listFlux
+                        .filter(playerB -> playerA.stream()
+                                .anyMatch(a -> a.club.equals(playerB.club)))
+                )
+                .distinct()
+                .collectMultimap(Player::getClub);
+
+        System.out.println(listFilter.block().size());
+
+        assert listFilter.block().size() == 451;
+
     }
+
+    
+
 }
