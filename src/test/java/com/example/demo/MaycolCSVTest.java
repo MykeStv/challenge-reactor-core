@@ -80,6 +80,7 @@ public class MaycolCSVTest {
                 .distinct()
                 .collectMultimap(Player::getNational);
 
+        //LISTA DE NACIONALIDADES
         List<String> nationalities = listNational.block().keySet().stream().collect(Collectors.toList()); //lista de nacionalidades
         //System.out.println(nationalities);
 
