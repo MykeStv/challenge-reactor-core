@@ -92,13 +92,13 @@ public class Player {
     @Override
     public String toString() {
         return "Player{" +
-                "id=" + id +
+//                "id=" + id +
                 ", name='" + name + '\'' +
-                ", age=" + age +
-                ", national='" + national + '\'' +
-//                ", winners=" + winners +
+//                ", age=" + age +
+//                ", national='" + national + '\'' +
+                ", winners=" + winners +
 //                ", games=" + games +
-                ", club='" + club + '\'' +
+//                ", club='" + club + '\'' +
                 '}';
     }
 }

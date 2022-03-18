@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import jdk.jfr.FlightRecorder;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -64,6 +65,33 @@ public class MaycolCSVTest {
 
     }
 
-    
+    //PRUEBA REACTIVE DE JUGADORES ORGANIZADOS POR NACIONALIDAD EN UN MAP
+    @Test
+    void reactive_nationalityPlayers() {
+        List<Player> list = CsvUtilFile.getPlayers();
+        Flux<Player> listFlux = Flux.fromStream(list.parallelStream()).cache();
+        Mono<Map<String, Collection<Player>>> listNational = listFlux
+                .buffer(100)
+                .flatMap(player1 -> listFlux
+                        .filter(player2 -> player1.stream()
+                                .anyMatch(n -> n.national.equals(player2.national)))
+//                        .sort()
+                )
+                .distinct()
+                .collectMultimap(Player::getNational);
+
+        List<String> nationalities = listNational.block().keySet().stream().collect(Collectors.toList()); //lista de nacionalidades
+        //System.out.println(nationalities);
+
+
+        System.out.println(listNational.block().size()); //obtiene el tamaño
+        //System.out.println(listNational.block().keySet()); //obteniene las nacionalidades
+        //System.out.println(listNational.block().values().stream().findAny()); //obtiene los gugadores con la primera nacionalidad
+        System.out.println(listNational.block().get("Argentina").size());
+
+
+        assert listNational.block().size() == 164;
+        assert listNational.block().get("Argentina").size() == 937; //jugadores de Argentina
+    }
 
 }
